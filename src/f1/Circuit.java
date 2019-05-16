@@ -10,11 +10,11 @@ public class Circuit {
     private ImageIcon map;
     private String name,aerodinamic,city,tireWear,grip;
     private double raceLentht,elevation;
-    private int length,laps,speed,rigthCurve,leftCurve,fansCapcity;
+    private int length,laps,speed,rigthCurve,leftCurve,fansCapcity,day,month;
     
     public Circuit(int index,String name,String aerodinamic,String city,
             String tireWear,String grip,double raceLentht,double elevation,
-            int length,int laps,int speed,int rigthCurve,int leftCurve,int fansCapcity){
+            int length,int laps,int speed,int rigthCurve,int leftCurve,int fansCapcity,int day,int month){
         switch(index){
             case 0:
                 this.map = new ImageIcon(Circuit.class.getResource("/Images/Circuits/australia.jpg"));
@@ -46,6 +46,8 @@ public class Circuit {
         this.rigthCurve = rigthCurve;
         this.leftCurve = leftCurve;
         this.fansCapcity = fansCapcity;
+        this.day = day;
+        this.month = month;
     }
 
     public ImageIcon getMap() {
@@ -158,6 +160,22 @@ public class Circuit {
 
     public void setFansCapcity(int fansCapcity) {
         this.fansCapcity = fansCapcity;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
     
     

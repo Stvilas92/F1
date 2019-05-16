@@ -54,7 +54,8 @@ public class DataWorker {
             circuits[i] = (new Circuit(i, circuitsStr[0], circuitsStr[7], circuitsStr[1],
                     circuitsStr[11], circuitsStr[12], Double.parseDouble(circuitsStr[6]), Double.parseDouble(circuitsStr[3]),
                     Integer.parseInt(circuitsStr[2]), Integer.parseInt(circuitsStr[5]), Integer.parseInt(circuitsStr[8]),
-                    Integer.parseInt(circuitsStr[9]), Integer.parseInt(circuitsStr[10]), Integer.parseInt(circuitsStr[4])));
+                    Integer.parseInt(circuitsStr[9]), Integer.parseInt(circuitsStr[10]), Integer.parseInt(circuitsStr[4]),
+                            Integer.parseInt(circuitsStr[13]),Integer.parseInt(circuitsStr[14])));
         }
 
         return circuits;

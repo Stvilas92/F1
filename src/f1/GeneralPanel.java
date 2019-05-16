@@ -49,15 +49,11 @@ public class GeneralPanel extends JPanel {
                 break;
 
             case 2:
-                this.remove(0);
                 
-                this.setOpaque(true);
                 break;
 
             case 3:
-                this.remove(0);
                 
-                this.setOpaque(true);
                 break;
 
             default:

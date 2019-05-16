@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Calendar;
 import javax.swing.*;
 
 /**
@@ -12,9 +13,12 @@ import javax.swing.*;
  * @author alejavilas92
  */
 public class CircuitPanel extends JPanel implements MouseListener {
-
+    TimerSwing t;
     Dimension screenSize;
-    JLabel lblCircuit, lblcircuitName, lblcircuitFans, lblcircuitKilometers, lblcircuitCity,lblTime;
+    JLabel lblCircuit, lblcircuitName, lblcircuitFans, lblcircuitKilometers, lblcircuitCity, lblTime,
+            lblTimeTitle, lblAerodinamic, lblTireWear, lblGrip, lblEvelation, lblRaceKm, lblLaps,
+            lblMaxSpeed, lblRightCurves, lblLeftCurves;
+    int seconds, minutes, hours = 1;
     Circuit[] circuits;
     JButton btnBack, btnNext;
     int index = 0;
@@ -30,6 +34,25 @@ public class CircuitPanel extends JPanel implements MouseListener {
         this.circuits = dataWorker.getCircuits();
 
         inicializateComponents(index);
+    }
+
+    private int calculateSeconds() {
+        return (hours * 3600) + (minutes * 60) + seconds;
+    }
+
+    private int getSecondsToGrandPrix(int dayGrandPrix, int mothsGrandPrix) {
+        int dayActual = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int monthActual = Calendar.getInstance().get(Calendar.MONTH);
+
+        if (mothsGrandPrix - monthActual < 0) {
+            return 0;
+        } else if (mothsGrandPrix - monthActual == 0) {
+            return (dayGrandPrix - dayActual) * 86400;
+        } else if (dayGrandPrix < dayActual) {
+            return ((mothsGrandPrix - monthActual) * 2505600) + ((dayGrandPrix - dayActual) * 86400);
+        } else {
+            return ((mothsGrandPrix - monthActual) * 2505600) + ((31 - (dayActual - dayGrandPrix)) * 86400);
+        }
     }
 
     private void inicializateComponents(int index) {
@@ -72,6 +95,53 @@ public class CircuitPanel extends JPanel implements MouseListener {
         lblcircuitCity = new JLabel("City : " + circuits[index].getCity());
         labelMaker(lblcircuitCity, screenSize.width / 50, (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 3), screenSize.width / 5, screenSize.height / 25);
 
+        //Label  aerodinamic charge
+        lblAerodinamic = new JLabel("Carga aerodinámica : " + circuits[index].getAerodinamic());
+        labelMaker(lblAerodinamic, screenSize.width / 50, (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 4), screenSize.width / 5, screenSize.height / 25);
+
+        //Label  tire wear
+        lblTireWear = new JLabel("Desgaste de neumáticos : " + circuits[index].getTireWear());
+        labelMaker(lblTireWear, screenSize.width / 50, (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 5), screenSize.width / 5, screenSize.height / 25);
+
+        //Label  grip
+        lblGrip = new JLabel("Agarre : " + circuits[index].getGrip());
+        labelMaker(lblGrip, screenSize.width / 50, (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 6), screenSize.width / 5, screenSize.height / 25);
+
+        //Label  elevation
+        lblEvelation = new JLabel("Elevación : " + circuits[index].getElevation());
+        labelMaker(lblEvelation, screenSize.width / 50, (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 7), screenSize.width / 5, screenSize.height / 25);
+
+        //Label race kilometers
+        lblRaceKm = new JLabel("Distancia carrera : " + circuits[index].getRaceLentht());
+        labelMaker(lblRaceKm, screenSize.width / 50, (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 8), screenSize.width / 5, screenSize.height / 25);
+
+        //Label tie laps
+        lblLaps = new JLabel("Vueltas : " + circuits[index].getLaps());
+        labelMaker(lblLaps, (screenSize.width / 3), (int) (screenSize.height / 2.3), screenSize.width / 5, screenSize.height / 25);
+
+        //Label  max speed
+        lblMaxSpeed = new JLabel("Velocidad max : " + circuits[index].getSpeed());
+        labelMaker(lblMaxSpeed, (screenSize.width / 3), (int) (screenSize.height / 2.3) + (screenSize.height / 25), screenSize.width / 5, screenSize.height / 25);
+
+        //Label  rigth curves
+        lblRightCurves = new JLabel("Curvas derecha : " + circuits[index].getRigthCurve());
+        labelMaker(lblRightCurves, (screenSize.width / 3), (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 2), screenSize.width / 5, screenSize.height / 25);
+
+        //Label date
+        lblLeftCurves = new JLabel("Curvas izquierda : " + circuits[index].getLeftCurve());
+        labelMaker(lblLeftCurves, (screenSize.width / 3), (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 3), screenSize.width / 5, screenSize.height / 25);
+
+        //Label time title
+        lblTimeTitle = new JLabel("TIME TO GRAND PRIX");
+        labelMaker(lblTimeTitle, (screenSize.width / 3), (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 4), screenSize.width / 8, screenSize.height / 15);
+
+        //Label timeback
+        lblTime = new JLabel(hours + ":" + minutes + ":" + seconds);
+        labelMaker(lblTime, (screenSize.width / 3), (int) (screenSize.height / 2.3) + (screenSize.height / 25 * 6), screenSize.width / 8, screenSize.height / 15);
+        t = new TimerSwing(lblTime);
+        //TODO aplicar cuenta atrás a cada circuito
+        t.start(calculateSeconds());
+
         this.add(btnBack);
         this.add(btnNext);
         this.add(lblCircuit);
@@ -81,7 +151,7 @@ public class CircuitPanel extends JPanel implements MouseListener {
         //Map image
         lblCircuit.setIcon(circuits[index].getMap());
 
-        //Label Name
+        //Label Name 
         lblcircuitName.setText("Name : " + circuits[index].getName());
 
         //Label Fans Capacity
@@ -92,6 +162,37 @@ public class CircuitPanel extends JPanel implements MouseListener {
 
         //Label City
         lblcircuitCity.setText("City : " + circuits[index].getCity());
+
+        //Label  aerodinamic charge
+        lblAerodinamic.setText("Carga aerodinámica : " + circuits[index].getAerodinamic());
+
+        //Label  tire wear
+        lblTireWear.setText("Desgaste de neumáticos : " + circuits[index].getTireWear());
+
+        //Label  grip
+        lblGrip.setText("Agarre : " + circuits[index].getGrip());
+
+        //Label  elevation
+        lblEvelation.setText("Elevación : " + circuits[index].getElevation());
+
+        //Label race kilometers
+        lblRaceKm.setText("Distancia carrera : " + circuits[index].getRaceLentht());
+
+        //Label tie laps
+        lblLaps.setText("Vueltas : " + circuits[index].getLaps());
+
+        //Label  max speed
+        lblMaxSpeed.setText("Velocidad max : " + circuits[index].getSpeed());
+
+        //Label  rigth curves
+        lblRightCurves.setText("Curvas derecha : " + circuits[index].getRigthCurve());
+
+        //Label date
+        lblLeftCurves.setText("Curvas izquierda : " + circuits[index].getLeftCurve());
+
+        t.stop();
+        t.start(calculateSeconds());
+
     }
 
     /**
@@ -151,15 +252,77 @@ public class CircuitPanel extends JPanel implements MouseListener {
         btn.setBackground(new Color(145, 190, 225));
     }
 
-    class TimerSwing extends JFrame implements ActionListener{
-        
-        public TimerSwing(JLabel lbl) {
-            
+    class TimerSwing extends JFrame implements ActionListener {
+
+        private int timeSeconds;
+        private Timer timer;
+        private JLabel labelTime;
+
+        public TimerSwing(JLabel labelTime) {
+            timeSeconds = 0;
+            timer = new Timer(1000, this);
+            this.labelTime = labelTime;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            if (timeSeconds > 0) {
+                timeSeconds--;
+            } else {
+                stop();
+            }
+            labelTime.setText(calculateTime(timeSeconds));
+        }
+
+        private String calculateTime(int timeSeconds) {
+            if (timeSeconds > 0) {
+                int hours = 0, minutes = 0, seconds = 0;
+                if (timeSeconds < 60) {
+                    seconds = timeSeconds;
+                    minutes = 0;
+                    hours = 0;
+                } else if (timeSeconds < 3600) {
+                    minutes = timeSeconds / 60;
+                    seconds = timeSeconds - (minutes * 60);
+                    hours = 0;
+                } else {
+                    hours = timeSeconds / 3600;
+                    minutes = (timeSeconds - (hours * 60)) / 60;
+                    seconds = timeSeconds - ((minutes * 60) + (hours * 3600));
+                }
+
+                if (seconds < 10 || minutes < 10 || hours < 10) {
+                    String timeReturnString = "";
+                    if (seconds < 10) {
+                        timeReturnString = "" + hours + ":" + minutes + ": 0" + seconds;
+                    }
+                    if (minutes < 10) {
+                        timeReturnString = "" + hours + ": 0" + minutes + ":" + seconds;
+                    }
+                    if (hours < 10) {
+                        timeReturnString = "0" + hours + ":" + minutes + ":" + seconds;
+                    }
+                    return timeReturnString;
+                } else {
+                    return "" + hours + ":" + minutes + ":" + seconds;
+                }
+
+            } else {
+                return "00:00:00";
+            }
+        }
+
+        public void start(int secondsTo0) {
+            timeSeconds = secondsTo0;
+            timer.start();
+        }
+
+        public void stop() {
+            timer.stop();
+        }
+
+        public int getTimeSeconds() {
+            return timeSeconds;
         }
     }
 }
