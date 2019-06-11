@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainView extends JFrame implements ActionListener, MouseListener {
+public class MainView extends JFrame implements MouseListener {
 
     private JLabel lblBackground;
     private JButton btnGrandPrix, btnRiders, btnTeams, btnStats;
@@ -22,6 +22,7 @@ public class MainView extends JFrame implements ActionListener, MouseListener {
         this.setLayout(null);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter());
+        this.addKeyListener(new KeyHandler(this));
 
         //Background Label
         lblBackground = new JLabel(new ImageIcon("src/Images/MainBackground.jpg"));
@@ -51,8 +52,6 @@ public class MainView extends JFrame implements ActionListener, MouseListener {
         this.setResizable(false);
         infoPanel.setVisible(true);
     }
-    
-    
 
     /**
      * Set button configuration
@@ -71,10 +70,6 @@ public class MainView extends JFrame implements ActionListener, MouseListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    }
-
-    @Override
     public void mouseClicked(java.awt.event.MouseEvent e) {
         JButton btn = (JButton) e.getSource();
         btn.setBackground(new Color(226, 240, 247));
@@ -90,8 +85,7 @@ public class MainView extends JFrame implements ActionListener, MouseListener {
         }
 
         if (e.getSource() == btnStats) {
-            infoPanel.makePanel(2);
-            infoPanel.repaint();
+            JDialog p = new StatsDialog();
         }
 
         if (e.getSource() == btnTeams) {
